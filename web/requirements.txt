@@ -1,0 +1,5 @@
+fastapi==0.95.2
+psycopg2-binary
+SQLAlchemy
+uvicorn
+requests
