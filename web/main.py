@@ -8,7 +8,7 @@ DB_DATABASE_NAME = os.environ.get('DB_DATABASE_NAME')
 WEB_PORT = 8000
 
 import sys
-import requests
+from requests import Session
 from typing import Dict
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
@@ -37,8 +37,9 @@ class NewQuestionsRequest(BaseModel):
 
 def get_new_questions(db: SessionLocal, questions_num: int):
     questions_added: int = 0
+    session = Session()
     while questions_added < questions_num:
-        response = requests.get(f'https://jservice.io/api/random?count={questions_num - questions_added}')
+        response = session.get(f'https://jservice.io/api/random?count={questions_num - questions_added}')
         if response.status_code != 200:
             raise HTTPException(status_code=500, detail='Failed to get questions from API')
         for row in response.json():
